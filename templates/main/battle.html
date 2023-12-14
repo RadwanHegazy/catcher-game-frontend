@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نافس الان</title>
+    <link rel="stylesheet" href="{% static 'style/battle.css' %}">
+</head>
+<body>
+    
+
+    <div class="up">
+
+        <div class="user">
+            <img src="http://127.0.0.1:9000{{red_player.picture}}" alt="">
+            <p>{{red_player.full_name}}</p>
+            <p>الاعب الاحمر</p>
+        </div>
+
+        <h1>ضد</h1>
+
+        <div class="user">
+            <img src="http://127.0.0.1:9000{{blue_player.picture}}" alt="">
+            <p>{{blue_player.full_name}}</p>
+            <p>الاعب الازرق</p>
+        </div>
+
+        <small class="time">1:00</small>
+    </div>
+
+
+    <div class="battle">
+
+        <div class="red_player" id="{{red_player.uuid}}"></div>
+        <div class="blue_player" id="{{blue_player.uuid}}"></div>
+
+    </div>
+
+
+    <script>
+        
+        // movement actions
+        var CurrentUser = document.getElementById('{{u.uuid}}');
+        var big_size = CurrentUser.getBoundingClientRect(); 
+        var small_size = document.querySelector('.battle').getBoundingClientRect(); 
+        let y = big_size.top - small_size.top;
+        let x = big_size.left - small_size.left;
+
+
+        document.onkeypress = function(e){
+            var move = e.key;
+
+            if (move == 'w') {
+
+                if ( y > 0){
+                    y = y - 10;
+                } else if (y == 0){
+                    y = small_size.height - 20
+                }
+            }
+            
+            if (move == 's') {
+
+                if ( y < small_size.height - 20){
+                    y = y + 10;
+                } else if ( y == small_size.height - 20){
+                    y = 0;
+                }
+            }
+
+            if (move == 'a'){
+                if ( x > 0){
+                    x = x - 10
+                }else if ( x == 0){
+                    x = small_size.width - 20 ;
+                }
+            }
+
+            
+            if (move == 'd'){
+                if ( x < small_size.width - 20){
+                    x = x + 10
+                } else if (x == small_size.width - 20){
+                    x = 0;
+                }
+            }
+
+
+
+            socket.send(JSON.stringify({'x':x,'y':y}))
+
+        }
+
+
+        
+        var battle_uuid = "{{uuid}}";
+
+        var socket = new WebSocket('ws://127.0.0.1:9000/battle/' + battle_uuid + '/?token=' + "{{token}}");
+
+        socket.onmessage = function(e){
+            var data = JSON.parse(e.data);
+            var x = data.x;
+            var y = data.y;
+            var user = data.sender;
+
+            var object = document.getElementById(user);
+            object.style.top = y + 'px';
+            object.style.left = x + 'px';
+
+        }
+
+
+        const interval = setInterval(check_red,1);
+
+        function check_red (){
+            var red_player = document.querySelector('.battle div:first-child').getBoundingClientRect();
+            var red_player_x  = red_player.x ; 
+            var red_player_y = red_player.y;
+            var blue_player = document.querySelector('.battle div:last-child').getBoundingClientRect();
+            var blue_player_x = blue_player.x ;
+            var blue_player_y =  blue_player.y ;
+
+            if ( red_player_x == blue_player_x && red_player_y == blue_player_y){
+                
+                socket.send(JSON.stringify({'winner':"{{red_player.uuid}}"}));
+                clearInterval(interval);
+            
+            }   
+
+        }
+
+        
+
+
+
+        socket.onclose = function(e){
+            window.location.href = 'winner/';
+        }
+        
+    </script>
+
+
+    <script>
+
+        var time_per_min = 1;
+        var time = document.querySelector('.time');
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+        
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+        
+                display.textContent = minutes + ":" + seconds;
+        
+                if (--timer < 0) {
+                    timer = duration;
+                    socket.send(JSON.stringify({'winner':"{{blue_player.uuid}}"}));
+                }
+            }, 1000);
+        }
+        
+        window.onload = function () {
+           
+            var fiveMinutes = 60 * time_per_min;
+            startTimer(fiveMinutes, time);
+
+        };
+    
+    </script>
+
+</body>
+</html>

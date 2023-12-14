@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انشاء حساب</title>
+    <link rel="stylesheet" href="{% static 'style/auth.css' %}">
+</head>
+<body>
+    
+    
+    <form class="container" method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        <div class="pic">
+            <input type="file" name="picture" hidden id="imgInput">
+            <img src="{% static 'images/user.png' %}" alt="" id="imgView">
+            <button type="button" id="imgBtn">نغير</button>
+        </div>
+
+        <input required type="text" placeholder="الاسم بالكامل" name="full_name" id="">
+        <input required type="email" placeholder="البريد الالكتروني" name="email" id="">
+        <input required type="password" placeholder="كلمة المرور" name="password" id="">
+
+        <div class="btns">
+            <a href="{% url 'login' %}">تسجيل الدخول ؟</a>
+            <button type="submit">دخول</button>
+        </div>
+
+    </form>
+    
+
+    <script>
+
+        var imgBtn = document.getElementById('imgBtn');
+        var imgInput = document.getElementById('imgInput');
+        var imgView = document.getElementById('imgView');
+
+        imgBtn.addEventListener('click',function(){
+            imgInput.click()
+        })
+
+        imgInput.addEventListener('change',e=>{
+            imgView.src = URL.createObjectURL(e.target.files[0]);
+
+        })
+        
+
+    </script>
+</body>
+</html>

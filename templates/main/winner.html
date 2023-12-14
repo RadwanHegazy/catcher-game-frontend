@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نافس الان</title>
+    <link rel="stylesheet" href="{% static 'style/battle.css' %}">
+</head>
+<body>
+    
+
+    <div class="up">
+
+        <div class="user">
+            <img src="http://127.0.0.1:9000{{red_player.picture}}" alt="">
+            <p>{{red_player.full_name}}</p>
+            <p>الاعب الاحمر</p>
+        </div>
+
+        <h1>ضد</h1>
+
+        <div class="user">
+            <img src="http://127.0.0.1:9000{{blue_player.picture}}" alt="">
+            <p>{{blue_player.full_name}}</p>
+            <p>الاعب الازرق</p>
+        </div>
+
+    </div>
+
+
+    <div class="battle cen">
+
+        <p>الفائز هو</p>
+        <h1>{{winner.full_name}}</h1>
+    </div>
+
+
+</body>
+</html>

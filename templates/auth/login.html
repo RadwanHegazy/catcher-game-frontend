@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <link rel="stylesheet" href="{% static 'style/auth.css' %}">
+</head>
+<body>
+    
+    
+    <form class="container" method="POST">
+        {% csrf_token %}
+
+        <input required type="email" placeholder="البريد الالكتروني" name="email" id="">
+        <input required type="password" placeholder="كلمة المرور" name="password" id="">
+
+        <div class="btns">
+            <a href="{% url 'register' %}">انشاء حساب ؟</a>
+            <button type="submit">دخول</button>
+        </div>
+
+    </form>
+    
+    <script>
+        if ('{{message}}'){
+            alert("{{message}}")
+        }
+    </script>
+</body>
+</html>

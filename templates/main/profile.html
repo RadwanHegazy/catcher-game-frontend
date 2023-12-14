@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البروفايل</title>
+    <link rel="stylesheet" href="{% static 'style/profile.css' %}">
+</head>
+<body>
+    
+
+    <div class="user">
+    
+        <img src="http://127.0.0.1:9000{{u.picture}}" alt="">
+    
+        <div class="info">
+            <p>{{u.full_name}}</p>
+            <p>{{u.points}} pts</p>
+        </div>
+    
+        <a href="{% url 'logout' %}" class="logout"></a>
+    
+    </div>    
+    
+    <button id="join">دخول جلسة عشوائية</button>
+
+    <div class="leaders">
+        <p>قائمة افصل 5 أشخاص</p>
+    
+        <div class="ucont"></div>
+    
+        
+    </div>
+
+
+    <script>
+        
+        // join battle
+        var JoinBtn = document.getElementById('join');
+        
+        JoinBtn.addEventListener('click',function(e){
+
+            JoinBtn.textContent = 'جاري البحث ...';
+            JoinBtn.style.background = '#34d9ec69';
+            JoinBtn.style.boxShadow = '';
+            JoinBtn.disabled = true;
+
+            var battle_socket = new WebSocket('ws://127.0.0.1:9000/create/battle/?token='+token);
+            
+            battle_socket.onmessage = function(e){
+                var data = JSON.parse(e.data);
+                var uuid = data.uuid;
+                
+                window.location.href = 'battle/' + uuid + '/';
+
+            }
+
+        })
+
+
+        // socket for get the user of the leadership
+        var token = document.cookie.split(';')[1].split('=')[1];
+        var cont = document.querySelector('.ucont');
+        var socket = new WebSocket('ws://127.0.0.1:9000/?token='+token);
+        
+        socket.onmessage = function (data) {
+            var json_data = JSON.parse(data.data);
+
+        
+            cont.innerHTML = '';
+
+            json_data.forEach(user=>{
+
+                var user_cont = `<div class="u">
+                    <div class="l">
+                        <img src="http://127.0.0.1:9000${user.picture}" alt="">
+                        <p>${user.full_name}</p>
+                    </div>
+                    <p>${user.points}</p>
+                </div> `;
+                
+                cont.innerHTML += user_cont
+
+            })
+
+            
+        }
+
+    </script>
+</body>
+</html>

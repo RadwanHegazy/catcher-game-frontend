@@ -1,0 +1,126 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --var-font:"Cairo",sans-serif;
+    --var-main-color:#34D9EC;
+    --var-sucess:#09E85B;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E6E4E4;
+    padding-top: 1rem;
+    gap: 30px;
+    flex-direction: column;
+}
+
+.user {
+    width: 400px;
+    height: 150px;
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.user > img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: contain;
+    background-color: #f9f9f9f9;
+    padding: 6px 12px;
+}
+
+.user .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--var-font);
+}
+
+
+
+.user .logout {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    box-shadow: 0px 0px 12px #ff000050;
+    border-radius: 5px;
+}
+
+
+#join {
+    width: 200px;
+    height: 45px;
+    border: none;
+    outline: none;
+    font-family: var(--var-font);
+    background-color: var(--var-main-color);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0px 0px 30px #34D9EC90;
+}
+
+.leaders {
+    width: 400px;
+    height: auto;
+    padding-bottom: 10px;
+    background-color: #fff;
+}
+
+.leaders p {
+    text-align: center;
+    padding: 1rem;
+    color: var(--var-main-color);
+    font-family: var(--var-font);
+    font-weight: bold;    
+}
+
+
+.ucont {
+    width: 100%;
+    height: auto;
+    /* border: 1px solid red; */
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ucont .u {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    background-color: #34D9EC20;
+}
+
+.ucont .u .l {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ucont .u .l img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
